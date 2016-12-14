@@ -1,0 +1,88 @@
+很感谢廖大神的git教程，真的很受用，比很多的教程写得都通俗易懂，还结合了生动的例子
+学习起来也很轻松。
+添加同户名和邮箱
+$ git config --global user.name "Your Name"
+$ git config --global user.email "email@example.com" 
+mkdir+目录名创建一个仓库
+git init 初始化仓库
+git add +文件名（包括后缀） 添加一个文件到版本控制，可多次添加
+git commit -m"修改的内容描述" 将该文件提交到版本控制系统
+git diff +文件名 查看修改的内容 只能查看add 但是没有commit的文件
+git status 查看当前的状态
+head指针指向的就是当前的版本，
+git reset --hard +版本号/或者git reset --hard HEAD^ 回退版本
+git log 查看提交的版本的历史
+git reflog 查看提交版本的版本号 以确定要回到那个版本
+ git checkout -- file 可以丢弃工作区的修改  用暂存区覆盖工作区
+git reset HEAD file 可以丢弃暂存区的修 用分支覆盖暂存区 
+git rm 文件名 从版本库删除文件
+rm 文件名 从工作区删除文件
+git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”
+
+git remote add origin git@server-name:path/repo-name.git；要关联一个远程库，使用命令
+也就是从远程吧git仓库东西下载
+git push -u origin master第一次推送master分支的所有内容；关联后，使用命令
+git push origin master此后，每次本地提交后，只要有必要，就可以使用命令,推送最新修改；
+git clone git@github.com:notsaltfish/gitskills.git 从远程仓库gitskills复制一份 到本地仓库
+git checkout -b dev 创建并切换分支
+git branch 查看当前分支
+git checkout +分支名 切换分支
+git meger +分支名  合并当前分支和指定分支
+git branch -d +分支名 删除分支
+git log --graph --pretty=oneline --abbrev-commit 查看分支合并情况
+git merge --no-ff -m "merge with no-off" dev 不使用Fast forward模式，merge
+git stash 把当前的工作进度存起来，但不提交到版本库或者stage 转而去处理其他的任务分支
+等回来的时候 可以继续恢复该工作进度继续处理
+git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
+另一种方式是用git stash pop，恢复的同时把stash内容也删了：
+你可以多次stash，恢复的时候，先用git stash list查看，然后恢复指定的stash，用命令：
+git stash apply stash@{0}
+git branch -D <name>强行删除 没有被合并过的分支，可以通过。
+git push origin master 推送分支 origin是远程仓库的的名字  master 是本地分支的名字 这样会吧master分支推送到远程仓库对应的分支
+ git branch -m origin/dev dev2 修改分支的名字
+多人合作的时候假设提交的文件别人已经修改过，那就会报错，就需要
+先把被人修改过的文件下载下来解决冲突，
+git branch --set-upstream-to=origin/dev dev 先要进行远程的dev分支和本地dev分支链接
+这样才能下载远程冲突文件下来
+git pull  就会下载远程仓库下来
+
+  ● 查看远程库信息，使用git remote -v；
+  ● 本地新建的分支如果不推送到远程，对其他人就是不可见的；
+  ● 从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
+  ● 在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+  ● 建立本地分支和远程分支的关联，使用git branch --set-upstream=origin/branch-name branch-name；
+  ● 从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
+git tag <name>用于新建一个标签，默认为HEAD，也可以指定一个commit id；
+git tag -a <tagname> -m "blablabla..."可以指定标签信息；
+git tag -s <tagname> -m "blablabla..."可以用PGP签名标签；
+命令git tag可以查看所有标签。
+git  show tag +名字 查看标签信息
+git push origin <tagname>可以推送一个本地标签；
+命令git push origin --tags可以推送全部未推送过的本地标签；
+命令git tag -d <tagname>可以删除一个本地标签；
+命令git push origin :refs/tags/<tagname>可以删除一个远程标签。注意冒号前面有空格
+
+
+上面的Fast-forward信息，Git告诉我们，这次合并是“快进模式”，也就是直接把master指向dev的当前提交，所以合并速度非常快
+合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
+遇到矛盾，直接打开工作区的文件修改
+当Git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。
+绿色代表暂存区，红色代表工作区
+Git会告诉你，git checkout -- file可以丢弃工作区的修改：
+用命令git reset HEAD file可以把暂存区的修改撤销掉（unstage），重新放回工作区：
+
+前面讲了我们把文件往Git版本库里添加的时候，是分两步执行的：
+第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区（stage）；
+第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支（master）。
+
+git add命令实际上就是把要提交的所有修改放到暂存区（Stage），然后，执行git commit就可以一次性把暂存区的所有修改提交到分支。
+commit 之后 暂存区就不会有什么东西了，git status 也不会有什么记录在里面
+
+Git管理的是修改，当你用git add命令后，在工作区的第一次修改被放入暂存区，准备提交，但是，在工作区的第二次修改并没有放入暂存区，所以，git commit只负责把暂存区的修改提交了，也就是第一次的修改被提交了，第二次的修改不会被提交。
+每次修改，如果不add到暂存区，那就不会加入到commit中
+
+场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
+场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。
+场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。
+
+已经将版本库和工作区都删除的需要恢复，第一线reset 然后在checkout
